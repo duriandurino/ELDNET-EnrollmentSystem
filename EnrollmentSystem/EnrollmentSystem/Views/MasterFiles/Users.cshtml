@@ -1,0 +1,194 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model EnrollmentSystem.Models.Entities.User
+
+<h1>Users</h1>
+
+<div class="container mt-4">
+    <div class="row">
+        <! -- User Detail Section -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">User Detail</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SaveUser" asp-controller="MasterFiles" method="post" id="userForm">
+                        <div class="form-group">
+                            <input asp-for="user_id" type="hidden" class="form-control" readonly id="user_id" value="@(Model != null ? Model.user_id : "")" />
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="username" class="form-label">User Name *</label>
+                            <input asp-for="username" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="password" class="form-label">Password *</label>
+                            <div class="input-group">
+                                <input asp-for="password" type="password" class="form-control" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <! -- Access Checkboxes -->
+                        <h3>Privileges</h3> <! -- Label -->
+                        <div class="form-group">
+                            <label asp-for="can_view" class="form-label">Can View</label>
+                            <select asp-for="can_view" class="form-control">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="can_edit" class="form-label">Can Edit</label>
+                            <select asp-for="can_edit" class="form-control">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="can_delete" class="form-label">Can Delete</label>
+                            <select asp-for="can_delete" class="form-control">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="can_add" class="form-label">Can Add</label>
+                            <select asp-for="can_add" class="form-control">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-secondary" id="createNewBtn">CREATE NEW</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> SAVE</button>
+                        </div>
+                    </form>
+                    <script>
+                        document.getElementById("createNewBtn").addEventListener("click", function () {
+                            document.getElementById("userForm").reset();
+                        });
+                    </script>
+                    <script>
+                        const passwordInput = document.getElementById('password');
+                        const togglePasswordButton = document.getElementById('togglePassword');
+
+                        togglePasswordButton.addEventListener('click', function () {
+                            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                            passwordInput.setAttribute('type', type);
+
+                            // Toggle the icon
+                            this.querySelector('i').classList.toggle('bi-eye-fill');
+                            this.querySelector('i').classList.toggle('bi-eye-slash-fill');
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <! -- User List Section -->
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">User List</h4>
+                </div>
+                <div class="card-body overflow-scroll">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="searchInput" class="form-label">Search:</label>
+                                <input type="text" class="form-control" id="searchInput">
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>User Name</th>
+                                <th>Can View</th>
+                                <th>Can Edit</th>
+                                <th>Can Delete</th>
+                                <th>Can Add</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Users != null)
+                            {
+                                @foreach (var user in ViewBag.Users)
+                                {
+                                    <tr>
+                                        <td>@user.user_id</td>
+                                        <td>@user.username</td>
+                                        <td>@(user.can_view == 1 ? "Yes" : "No")</td>
+                                        <td>@(user.can_edit == 1 ? "Yes" : "No")</td>
+                                        <td>@(user.can_delete == 1 ? "Yes" : "No")</td>
+                                        <td>@(user.can_add == 1 ? "Yes" : "No")</td>
+                                        <td>
+                                            <a asp-action="Users" asp-controller="MasterFiles" asp-route-id="@user.user_id" asp-route-page="@ViewBag.CurrentPage" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pen-fill"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="DeleteUser" asp-controller="MasterFiles" asp-route-id="@user.user_id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this User?')">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                    <!-- Pagination -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>
+                                Showing @((ViewBag.CurrentPage != null ? ViewBag.CurrentPage : 1) * (ViewBag.PageSize != null ? ViewBag.PageSize : 1) - (ViewBag.PageSize != null ? ViewBag.PageSize : 1) + 1)
+                                to @Math.Min((ViewBag.CurrentPage != null ? ViewBag.CurrentPage : 1) * (ViewBag.PageSize != null ? ViewBag.PageSize : 1), (int)(ViewBag.UserCount != null ? ViewBag.UserCount : 0))
+                                of @(ViewBag.UserCount != null ? ViewBag.UserCount : 0) entries
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Users" asp-controller="MasterFiles" asp-route-page="@(ViewBag.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                    }
+                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                            <a class="page-link" asp-action="Users" asp-controller="MasterFiles" asp-route-page="@i">@i</a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Users" asp-controller="MasterFiles" asp-route-page="@(ViewBag.CurrentPage + 1)">Next</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

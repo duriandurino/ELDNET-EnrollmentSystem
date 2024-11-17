@@ -1,0 +1,187 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model EnrollmentSystem.Models.Entities.Enroll
+
+<h1>Enrollments</h1>
+
+<div class="container mt-4 pb-5">
+    <div class="row pb-5">
+        <div class="col-md-12">
+            <! -- The Enroll form will take up the full width (adjust as needed)  -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Enrollment Detail</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SaveEnroll" asp-controller="Transactional" method="post" id="enrollForm">
+                        <div class="form-group">
+                            <input asp-for="enroll_id" type="hidden" class="form-control" readonly id="enroll_id" value="@(Model != null ? Model.enroll_id : "")" />
+                        </div>
+
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="stud_id" class="form-label">Student *</label>
+                            <select asp-for="stud_id" class="form-control" asp-items="@ViewBag.Students">
+                                <option value="">-- Select Student --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="sem_id" class="form-label">Semester *</label>
+                            <select asp-for="sem_id" class="form-control" asp-items="@ViewBag.Semesters">
+                                <option value="">-- Select Semester --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="course_id" class="form-label">Course *</label>
+                            <select asp-for="course_id" class="form-control" asp-items="@ViewBag.Courses">
+                                <option value="">-- Select Course --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="subj_id" class="form-label">Subject *</label>
+                            <select asp-for="subj_id" class="form-control" asp-items="@ViewBag.Subjects">
+                                <option value="">-- Select Subject --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="room_id" class="form-label">Room *</label>
+                            <select asp-for="room_id" class="form-control" asp-items="@ViewBag.Rooms">
+                                <option value="">-- Select Room --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="enroll_date" class="form-label">Enrollment Date *</label>
+                            <input asp-for="enroll_date" type="date" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="encodedby" class="form-label">Encoded By *</label>
+                            <input asp-for="encodedby" type="text" class="form-control" />
+                        </div>
+
+
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-secondary" id="createNewBtn">CREATE NEW</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> SAVE</button>
+                        </div>
+
+                    </form>
+
+                    <script>
+                        document.getElementById("createNewBtn").addEventListener("click", function () {
+                            document.getElementById("enrollForm").reset();
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card mt-3">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Enrollment List</h4>
+                </div>
+                <div class="card-body overflow-scroll">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="searchInput" class="form-label">Search:</label>
+                                <input type="text" class="form-control" id="searchInput">
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Enrollment ID</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Subject</th>
+                                <th>Semester</th>
+                                <th>Room</th>
+                                <th>Enrollment Date</th>
+                                <th>Encoded By</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Enrollments != null)
+                            {
+                                @foreach (var enroll in ViewBag.Enrollments)
+                                {
+                                    <tr>
+                                        <td>@enroll.enroll_id</td>
+                                        <!-- Make sure `Student`, `Semester`, `Subject`, `Course`, and `Room` have the correct property name! -->
+                                        <td>@enroll.stud_id</td>
+                                        <td>@enroll.sem_id</td>
+                                        <td>@enroll.subj_id</td>
+                                        <td>@enroll.course_id</td>
+                                        <td>@enroll.room_id</td>
+                                        <td>@enroll.enroll_date.ToString("yyyy-MM-dd")</td>
+                                        <td>@enroll.encodedby</td>
+                                        <td>
+                                            <a asp-action="Enrolls" asp-controller="Transactional" asp-route-id="@enroll.enroll_id" asp-route-page="@ViewBag.CurrentPage" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pen-fill"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="DeleteEnroll" asp-controller="Transactional" asp-route-id="@enroll.enroll_id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Enrollment?')">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>
+                                Showing @((ViewBag.CurrentPage != null ? ViewBag.CurrentPage : 1) * (ViewBag.PageSize != null ? ViewBag.PageSize : 1) - (ViewBag.PageSize != null ? ViewBag.PageSize : 1) + 1)
+                                to @Math.Min((ViewBag.CurrentPage != null ? ViewBag.CurrentPage : 1) * (ViewBag.PageSize != null ? ViewBag.PageSize : 1), (int)(ViewBag.EnrollmentCount != null ? ViewBag.EnrollmentCount : 0))
+                                of @(ViewBag.EnrollmentCount != null ? ViewBag.EnrollmentCount : 0) entries
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Enrollments" asp-controller="Transactional" asp-route-page="@(ViewBag.CurrentPage - 1)">Previous</a>
+                                        </li>
+                                    }
+                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                            <a class="page-link" asp-action="Enrollments" asp-controller="Transactional" asp-route-page="@i">@i</a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Enrollments" asp-controller="Transactional" asp-route-page="@(ViewBag.CurrentPage + 1)">Next</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

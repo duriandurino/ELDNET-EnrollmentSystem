@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+
+<ul class="sidebar-menu side-design overflow-y-scroll">
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Dashboard"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="Home" asp-action="Index"><i class="bi bi-house-fill"></i> Dashboard</a></li>
+
+
+    <li class="group-title sidebarGrpTitle my-3" style="color:#08979c!important">Transactional</li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Students"><a asp-controller="Transactional" asp-action="Students"><i class="bi bi-backpack2-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="Transactional" asp-action="Students"><i class="bi bi-backpack2-fill"></i> Add Student</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Enrolls"><a asp-controller="Transactional" asp-action="Enrolls"><i class="bi bi-backpack2-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="Transactional" asp-action="Enrolls"><i class="bi bi-journal-check"></i> Enroll Student</a></li>
+
+
+    <li class="group-title sidebarGrpTitle my-3" style="color:#08979c!important">Master Files</li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Users"><a asp-controller="MasterFiles" asp-action="Users"><i class="bi bi-people-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Users"><i class="bi bi-people-fill"></i> Users</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Departments"><a asp-controller="MasterFiles" asp-action="Departments"><i class="bi bi-building"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Departments"><i class="bi bi-building"></i> Departments</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Rooms"><a asp-controller="MasterFiles" asp-action="Rooms"><i class="bi bi-door-open-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Rooms"><i class="bi bi-door-open-fill"></i> Rooms</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Semesters"><a asp-controller="MasterFiles" asp-action="Semesters"><i class="bi bi-calendar-minus-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Semesters"><i class="bi bi-calendar-minus-fill"></i> Semesters</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Courses"><a asp-controller="MasterFiles" asp-action="Courses"><i class="bi bi-mortarboard-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Courses"><i class="bi bi-mortarboard-fill"></i> Courses</a></li>
+
+    <li class="sidebarIcon p-3" data-mdb-tooltip-init data-mdb-placement="right" title="Subjects"><a asp-controller="MasterFiles" asp-action="Subjects"><i class="bi bi-book-fill"></i></a></li>
+    <li class="sidebarText p-3"><a asp-controller="MasterFiles" asp-action="Subjects"><i class="bi bi-book-fill"></i> Subjects</a></li>
+</ul>
